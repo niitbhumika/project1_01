@@ -18,10 +18,14 @@ import com.niit.shoppingcart.giftsgallery.dao.CategoryDAO;
 import com.niit.shoppingcart.giftsgallery.dao.CategoryDAOImpl;
 import com.niit.shoppingcart.giftsgallery.dao.ProductDAO;
 import com.niit.shoppingcart.giftsgallery.dao.ProductDAOImpl;
+import com.niit.shoppingcart.giftsgallery.dao.SupplierDAO;
+import com.niit.shoppingcart.giftsgallery.dao.SupplierDAOImpl;
 import com.niit.shoppingcart.giftsgallery.dao.UserDAO;
 import com.niit.shoppingcart.giftsgallery.dao.UserDAOImpl;
+import com.niit.shoppingcart.giftsgallery.model.Cart;
 import com.niit.shoppingcart.giftsgallery.model.Category;
 import com.niit.shoppingcart.giftsgallery.model.Product;
+import com.niit.shoppingcart.giftsgallery.model.Supplier;
 import com.niit.shoppingcart.giftsgallery.model.UserInfo;
 
 @Configuration
@@ -48,7 +52,7 @@ public class ApplicationContextConfig
 	    properties.put("hibernate.show_sql", "true");
 	    properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 	    properties.put("hibernate.hbm2ddl.auto", "update");
-	    properties.put("hibernate.current_session_context_class","thread");
+	  //  properties.put("hibernate.current_session_context_class","thread");
 	    
 	    System.out.println("properties");
 		 
@@ -61,15 +65,17 @@ public class ApplicationContextConfig
 	    LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
 	    sessionBuilder.addProperties(getHibernateProperties());
 	 
-	/*  sessionBuilder.addAnnotatedClasses(Supplier.class);
-	   sessionBuilder.addAnnotatedClasses(Cart.class);
-	   sessionBuilder.addAnnotatedClasses(CartItem.class);
-	   sessionBuilder.addAnnotatedClasses(Customer.class);
-	*/   
+	 //sessionBuilder.addAnnotatedClasses(Supplier.class);
+	   //sessionBuilder.addAnnotatedClasses(Cart.class);
+	  // sessionBuilder.addAnnotatedClasses(CartItem.class);
+	   //sessionBuilder.addAnnotatedClasses(Customer.class);
+	  
 	    sessionBuilder.addAnnotatedClasses(UserInfo.class);
 	    sessionBuilder.addAnnotatedClasses(Product.class);
 	    sessionBuilder.addAnnotatedClasses(Category.class);
-		 
+	    sessionBuilder.addAnnotatedClasses(Supplier.class);
+	    sessionBuilder.addAnnotatedClasses(Cart.class);
+	    
 		 
 		  
 	   System.out.println("session factory");
@@ -99,7 +105,7 @@ public class ApplicationContextConfig
 	    	return new Category();
 	    }
 
-	    /*@Autowired
+	    @Autowired
 		@Bean(name="supplierDAO")
 		public SupplierDAO getSupplierDAO(SessionFactory sessionFactory) {
 		    
@@ -111,7 +117,7 @@ public class ApplicationContextConfig
 	    public Supplier getSupplier()
 	    {
 	    	return new Supplier();
-	    	}*/
+	    	}
 	    
 	
 	//User
@@ -126,18 +132,16 @@ public class ApplicationContextConfig
 		}
 	    @Autowired
 	    @Bean(name="userinfo")
-	    public UserInfo getuser()
+	    public UserInfo getUser()
 	    {
 	    	System.out.println("user ");
 			 
 	    	return new UserInfo();
 	    }
-}
 
-
-	//Product
+//Product
 	    
-	    /*@Autowired
+	    @Autowired
 		@Bean(name="productDAO")
 		public ProductDAO getProductDAO(SessionFactory sessionFactory) {
 		    
@@ -149,12 +153,12 @@ public class ApplicationContextConfig
 	    @Bean(name="product")
 	    public Product getProduct()
 	    {
-	    	System.out.println("product ");
+	    	System.out.println("product");
 			
-	    	return new Product*/
-	    
-	    
-	   // Category
+	    	return new Product();
+	    }
+}
+	   
      
 	    
 	    
