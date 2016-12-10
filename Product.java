@@ -9,7 +9,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,38 +22,39 @@ public class Product
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int prod_id;
 	private String prod_name;
-	/*@Min(1)*/
+	@Min(1)
 	private int prod_price;
-	/*@Min(1)*/
+	@Min(1)
 	private int quantity;
 	@Transient
 	private MultipartFile image;
 	
-	/*@ManyToOne
-	@JoinColumn(name = "cat_Id", insertable= false, updatable = false)
+	@ManyToOne
+	@JoinColumn(name = "cat_id", insertable= false, updatable = false)
 	
 	private Category category;
-	private int cat_Id;
+	private int cat_id;
 	
 	@ManyToOne
-	@JoinColumn(name = "sup_Id", insertable = false, updatable = false)
+	@JoinColumn(name = "sup_id", insertable = false, updatable = false)
 	
 	private Supplier supplier;
 	
-	private int sup_Id;*/
+	private int sup_id;
 	
 	
-	/*public Category getCategory() {
+	public Category getCategory() {
 		return category;
 	}
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-	public int getCat_Id() {
-		return cat_Id;
+	
+	public int getCat_id() {
+		return cat_id;
 	}
-	public void setCat_Id(int cat_Id) {
-		this.cat_Id = cat_Id;
+	public void setCat_id(int cat_id) {
+		this.cat_id = cat_id;
 	}
 	public Supplier getSupplier() {
 		return supplier;
@@ -62,12 +62,12 @@ public class Product
 	public void setSupplier(Supplier supplier) {
 		this.supplier = supplier;
 	}
-	public int getSup_Id() {
-		return sup_Id;
+	public int getSup_id() {
+		return sup_id;
 	}
-	public void setSup_Id(int sup_Id) {
-		this.sup_Id = sup_Id;
-	}*/
+	public void setSup_id(int sup_id) {
+		this.sup_id = sup_id;
+	}
 	public MultipartFile getImage() {
 		return image;
 	}

@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.niit.shoppingcart.giftsgallery.model.Product;
-/*@Repository*/
+@Repository
 public interface ProductDAO
 {
 	public boolean saveOrUpdate(Product product);

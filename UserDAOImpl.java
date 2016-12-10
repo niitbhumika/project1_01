@@ -15,7 +15,7 @@ import com.niit.shoppingcart.giftsgallery.model.UserInfo;
 
 
 @Repository (value= "userDAO")
-@EnableTransactionManagement
+//@EnableTransactionManagement
 public class UserDAOImpl implements UserDAO{
 
 	@Autowired

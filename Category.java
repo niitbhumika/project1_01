@@ -7,9 +7,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.stereotype.Component;
+
 
 @Entity
 @Table (name="category")
+@Component
 public class Category
 {
 	@Id
