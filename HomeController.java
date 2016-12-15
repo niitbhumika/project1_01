@@ -29,9 +29,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.niit.shoppingcart.giftsgallery.dao.CategoryDAO;
 import com.niit.shoppingcart.giftsgallery.dao.ProductDAO;
+import com.niit.shoppingcart.giftsgallery.dao.SupplierDAO;
 import com.niit.shoppingcart.giftsgallery.dao.UserDAO;
 import com.niit.shoppingcart.giftsgallery.model.Category;
 import com.niit.shoppingcart.giftsgallery.model.Product;
+import com.niit.shoppingcart.giftsgallery.model.Supplier;
 import com.niit.shoppingcart.giftsgallery.model.UserInfo;
 
 
@@ -49,6 +51,12 @@ public class HomeController {
 	
 	@Autowired
 	Product product;
+	
+	@Autowired
+	Category category;
+	
+	@Autowired
+	Supplier supplier;	
 	
 	@Autowired
 	UserInfo userInfo;
@@ -107,7 +115,9 @@ public class HomeController {
 		
 		System.out.println("in product");
 		ModelAndView mv=new ModelAndView("addProducts");
-		model.addAttribute("productlist", productDAO.list());
+		model.addAttribute("productList", productDAO.list());
+		model.addAttribute("categoryList", categoryDAO.list());
+		model.addAttribute("supplierList", supplierDAO.list());
 		return mv;
 
 	}
@@ -181,8 +191,11 @@ public class HomeController {
 		System.out.println(name);
 		
 		//user=userDAO.get(name);
-		session.setAttribute("loggedInUser", userInfo.getEmailid());
-    	session.setAttribute("loggedInUserID", userInfo.getId());
+		
+		userInfo = userDAO.get(id);
+		int x = userInfo.getId();
+		session.setAttribute("loggedInUser", userInfo.getName());
+    	session.setAttribute("loggedInUserID", x);
     	
 		session.setAttribute("LoggedIn", "true");
 		
@@ -278,7 +291,7 @@ public class HomeController {
 		MultipartFile image = product.getImage();
 		Path path;/* belong to nio package */
 		path = Paths.get(
-				"F:/project1.1 2016/frontend1/src/main/webapp/resources/images/" + product.getProd_name() + ".jpg");
+				"C:/Users/bhumi/git/shopping-cart-gifts/frontend1/src/main/webapp/resources/images/" + product.getProd_name() + ".jpg");
 		System.out.println("Path=" + path);
 		System.out.println("File name" + product.getImage().getOriginalFilename());
 		if (image != null && !image.isEmpty()) {
@@ -293,9 +306,22 @@ public class HomeController {
 
 			}
 		}
-		productDAO.saveOrUpdate(product);
-		model.addAttribute("message","product added successfully");
-		model.addAttribute("productList", productDAO.list());
+		//category = categoryDAO.get(product.getCategory().getCat_name());
+		//	categoryDAO.saveOrUpdate(category);
+
+			
+       // supplier = supplierDAO.get(product.getSupplier().getSup_name());
+		//	supplierDAO.saveOrUpdate(supplier);
+
+			//product.setSupplier(supplier);
+			//product.setCategory(category);
+			productDAO.saveOrUpdate(product);
+			model.addAttribute("message","product added successfully");
+			model.addAttribute("productList", productDAO.list());
+			model.addAttribute("categoryList", categoryDAO.list());
+			model.addAttribute("supplierList", supplierDAO.list());
+		
+		
 
 		return "Products";
 	}
@@ -313,7 +339,7 @@ public class HomeController {
 		return result;
 		
 	}
-
+	
     /* Add categories */
 	@Autowired
 	CategoryDAO categoryDAO;
@@ -340,6 +366,28 @@ public class HomeController {
 	}
 	
 	/*Add suppliers*/
-	
+	@Autowired
+	SupplierDAO supplierDAO;
+
+	@RequestMapping("/addSuppliers") // JSP page
+	public ModelAndView showSupplier(@ModelAttribute("supplier") Supplier supplier, BindingResult result,
+			HttpServletRequest request)// commandname
+	{
+		ModelAndView mv = new ModelAndView("addSuppliers");
+		return mv;
+	}
+
+	@RequestMapping(value = "/addsuppliers", method = RequestMethod.POST) // Jsp page
+																			
+	public String addSupplier(@ModelAttribute("supplier") Supplier supplier, ModelMap model, BindingResult result,
+			HttpServletRequest request) {
+		System.out.println("In add supplier");
+		model.addAttribute("sup_id", supplier.getSup_id());
+		model.addAttribute("sup_name", supplier.getSup_name());
+		model.addAttribute("sup_description", supplier.getSup_description());
+
+		supplierDAO.saveOrUpdate(supplier);
+		return "login";
+	}
 	
 }
