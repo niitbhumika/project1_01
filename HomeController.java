@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -246,6 +248,8 @@ public class HomeController {
 	// when user clicks submit these details are posted//
 	@Autowired
 	UserDAO userDAO;
+	@Autowired
+	private JavaMailSender mailSender;
 	
 	@RequestMapping(value = "/addUser", method = RequestMethod.POST)
 	/*
@@ -275,8 +279,26 @@ public class HomeController {
 		model.addAttribute("password", user.getPassword());
 		user.setEnabled("true");
 		user.setRole("ROLE_USER");
+		
+		String recipientAddress =user.getEmailid();
+		String subject= "User Registration";
+		String message="User Registered Successfully.\n"+"The Details are:"+ "\n User Name: "+user.getEmailid()+"\n Phone Number: "+user.getPhno();
+		//prints debug info
+		System.out.println("To: " + recipientAddress);
+		System.out.println("Subject: " + subject);
+		System.out.println("message:" + message);
+		
+		//creates a simple email object
+		SimpleMailMessage email = new SimpleMailMessage();
+		email.setTo(recipientAddress);
+		email.setSubject(subject);
+		email.setText(message);
+		
+		//sends the email
+		mailSender.send(email);
+		
 		userDAO.saveOrUpdate(user);
-		return "login";
+		return "home";
 	}
 
 	/* Add Product */
