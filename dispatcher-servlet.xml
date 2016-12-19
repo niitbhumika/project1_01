@@ -16,7 +16,23 @@
 	                       <mvc:resources mapping="/resources/**" location="/resources/"></mvc:resources>
                                              
      <context:component-scan base-package="com.niit" />
-     <bean
+     
+     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+     <property name="host" value="smtp.gmail.com"/>
+     <property name="port" value="587"/>
+     <property name="username" value="ravishingbhumika12"/>
+     <property name="password" value="bhuka1234"/>
+     <property name="javaMailProperties">
+           <props>
+           <prop key="mail.transport.protocol">smtp</prop>
+           <prop key="mail.smtp.auth">true</prop>
+           <prop key="mail.smtp.starttls.enable">true</prop>
+            </props>
+     </property>
+     
+   </bean>    
+     
+      <bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<!-- here the location of all the jsp pgs is given(i.e our jsp pgs r in 
 			views folder -->
@@ -31,10 +47,10 @@
      
   
  <!-- WebFlow Configuration -->
-	<webflow:flow-executor id="flowExecutor" />
+	<!-- <webflow:flow-executor id="flowExecutor" />
 	<webflow:flow-registry id="flowRegistry"
 		flow-builder-services="flowBuilderServices" base-path="/WEB-INF">
-		<!-- here the id is mapped to invoke this flow -->
+		here the id is mapped to invoke this flow
 		<webflow:flow-location id="memberShip" path="/memberShipFlow.xml" />
 	</webflow:flow-registry>
 	<webflow:flow-builder-services id="flowBuilderServices"
@@ -64,7 +80,7 @@
 		<property name="flowRegistry" ref="flowRegistry" />
 		<property name="order" value="0" />
 	</bean>
-<mvc:resources mapping="/resources/**" location="/resources/" />
+ --><mvc:resources mapping="/resources/**" location="/resources/" />
 <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 <property name="maxUploadSize" value="268435456"/>
 </bean>
