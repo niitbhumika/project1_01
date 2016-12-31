@@ -1,27 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:webflow="http://www.springframework.org/schema/webflow-config"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation=" 
+	http://www.springframework.org/schema/beans  
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+http://www.springframework.org/schema/context  
+http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+http://www.springframework.org/schema/mvc  
+http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd  
+http://www.springframework.org/schema/webflow-config  
+http://www.springframework.org/schema/webflow-config/spring-webflow-config-2.0.xsd">
+
+	<!-- context refers to a bean factory(collection of objects which can be 
+		accessed by everyone component scans the package(i.e from src/main/java/com/) 
+		where our controllers r present -->
+
+	<context:component-scan base-package="com.niit" />
+	
+	 <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+     <property name="host" value="smtp.gmail.com"/>
+     <property name="port" value="587"/>
+     <property name="username" value="bhumikapathak286@gmail.com"/>
+     <property name="password" value="rahulkumar"/>
+     <property name="javaMailProperties">
+           <props>
+           <prop key="mail.transport.protocol">smtp</prop>
+           <prop key="mail.smtp.auth">true</prop>
+           <prop key="mail.smtp.starttls.enable">true</prop>
+            </props>
+     </property>
+     
+   </bean>    
+     
+    
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- here the location of all the jsp pgs is given(i.e our jsp pgs r in 
+			views folder -->
+		<property name="prefix">
+			<value>/WEB-INF/views/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+	<mvc:resources location="/resources/" mapping="/resources/**" />
+
+	<mvc:annotation-driven />
+	<!-- to upload images -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="5242880">
+		</property>
+	</bean>
+
+	<!-- WebFlow Configuration -->
+	<webflow:flow-executor id="flowExecutor" />
+	<webflow:flow-registry id="flowRegistry"
+		flow-builder-services="flowBuilderServices" base-path="/WEB-INF">
+		<!-- here the id is mapped to invoke this flow -->
+		<webflow:flow-location id="memberShip" path="/memberShipFlow.xml" />
+	</webflow:flow-registry>
+	<webflow:flow-builder-services id="flowBuilderServices"
+		view-factory-creator="viewFactoryCreator" />
+	<bean id="viewFactoryCreator"
+		class="org.springframework.webflow.mvc.builder.MvcViewFactoryCreator">
+		<property name="viewResolvers">
+			<list>
+				<ref bean="viewResolver" />
+			</list>
+		</property>
+	</bean>
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<bean class="org.springframework.webflow.mvc.servlet.FlowHandlerAdapter">
+		<property name="flowExecutor" ref="flowExecutor" />
+	</bean>
+	<bean class="org.springframework.webflow.mvc.servlet.FlowHandlerMapping">
+		<property name="flowRegistry" ref="flowRegistry" />
+		<property name="order" value="0" />
+	</bean>
+
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:webflow="http://www.springframework.org/schema/webflow-config"	
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                         http://www.sprinframework.org/schema/beans/spring-beans-3.0.xsd
                            http://www.springframework.org/schema/mvc
                            http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                           http://www.springframework.org/schema/context/spring-context-3.0.xsd
                            http://www.springframework.org/schema/context
-                           http://www.springframework.org/schema/context/spring-context.xsd 
                            http://www.springframework.org/schema/webflow-config
                            http://www.springframework.org/schema/webflow-config/spring-webflow-config-2.0.xsd">
                           
-                           <mvc:annotation-driven />
-	                       <mvc:resources mapping="/resources/**" location="/resources/"></mvc:resources>
-                                             
-     <context:component-scan base-package="com.niit" />
+   <context:component-scan base-package="com.niit"/>
+                                    
      
      <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
      <property name="host" value="smtp.gmail.com"/>
      <property name="port" value="587"/>
-     <property name="username" value="ravishingbhumika12"/>
-     <property name="password" value="bhuka1234"/>
+     <property name="username" value="bhumikapathak286@gmail.com"/>
+     <property name="password" value="rahulkumar"/>
      <property name="javaMailProperties">
            <props>
            <prop key="mail.transport.protocol">smtp</prop>
@@ -34,8 +155,8 @@
      
       <bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<!-- here the location of all the jsp pgs is given(i.e our jsp pgs r in 
-			views folder -->
+		here the location of all the jsp pgs is given(i.e our jsp pgs r in 
+			views folder
 
 		<property name="prefix">
 			<value>/WEB-INF/views/</value>
@@ -44,13 +165,15 @@
 			<value>.jsp</value>
 		</property>
 	</bean>
+	<mvc:annotation-driven />
+	                       <mvc:resources mapping="/resources/**" location="/resources/"></mvc:resources>
      
   
- <!-- WebFlow Configuration -->
-	<!-- <webflow:flow-executor id="flowExecutor" />
+ WebFlow Configuration
+	<webflow:flow-executor id="flowExecutor" />
 	<webflow:flow-registry id="flowRegistry"
 		flow-builder-services="flowBuilderServices" base-path="/WEB-INF">
-		here the id is mapped to invoke this flow
+		 here the id is mapped to invoke this flow
 		<webflow:flow-location id="memberShip" path="/memberShipFlow.xml" />
 	</webflow:flow-registry>
 	<webflow:flow-builder-services id="flowBuilderServices"
@@ -80,9 +203,10 @@
 		<property name="flowRegistry" ref="flowRegistry" />
 		<property name="order" value="0" />
 	</bean>
- --><mvc:resources mapping="/resources/**" location="/resources/" />
+<mvc:resources mapping="/resources/**" location="/resources/" />
 <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 <property name="maxUploadSize" value="268435456"/>
 </bean>
 </beans>
  
+ -->
